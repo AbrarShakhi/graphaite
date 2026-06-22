@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'core/utils/app_theme.dart';
+import 'features/calculator/presentation/bloc/expression_list/expression_list_bloc.dart';
+import 'features/calculator/presentation/bloc/graph/graph_bloc.dart';
+import 'features/calculator/presentation/pages/calculator_page.dart';
+import 'injection_container.dart';
 
 void main() {
+  configureDependencies();
   runApp(const GraphaiteApp());
 }
 
@@ -32,9 +39,15 @@ class _GraphaiteAppState extends State<GraphaiteApp> {
       title: 'Graphaite',
       debugShowCheckedModeBanner: false,
       themeMode: _themeMode,
-      theme: ThemeData.light(),
-      darkTheme: ThemeData.dark(),
-      home: Scaffold(),
+      theme: AppTheme.light(),
+      darkTheme: AppTheme.dark(),
+      home: MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (_) => sl<ExpressionListBloc>()),
+          BlocProvider(create: (_) => sl<GraphBloc>()),
+        ],
+        child: const CalculatorPage(),
+      ),
     );
   }
 }
