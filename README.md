@@ -224,7 +224,7 @@ This project was created to explore:
 
 # License
 
-This project is available under the [MIT License](License).
+This project is available under the [MIT License](LICENSE).
 
 # Credits
 
