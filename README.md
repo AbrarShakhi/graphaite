@@ -29,7 +29,7 @@ A modern **Desmos-inspired graphing calculator** built with Flutter. This projec
 
 | Desktop                 | Mobile                  |
 | ----------------------- | ----------------------- |
-| *(Add screenshot here)* | *(Add screenshot here)* |
+| ![linux screenshot](./screenshots/linux1.png) | ![android screenshot](./screenshots/android1.jpg) |
 
 ---
 
