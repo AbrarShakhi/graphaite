@@ -1,0 +1,70 @@
+name: Deploy to GitHub Pages
+
+# Build the Flutter web app and publish it to GitHub Pages on every push to the
+# default branch (and on manual runs).
+#
+# One-time setup: in the repo, go to Settings → Pages → "Build and deployment"
+# → Source: **GitHub Actions**. (No gh-pages branch is needed.)
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Permissions the deployment step needs to publish to Pages via OIDC.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# enable node version 24
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+# Let a newer push cancel an in-progress deploy; never run two deploys at once.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.44.0
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Analyze
+        run: flutter analyze
+
+      - name: Test
+        run: flutter test
+
+      # base-href must match the URL path Pages serves from. For a project repo
+      # that's "/<repo-name>/" (e.g. https://abrarshakhi.github.io/abrarshakhi/).
+      - name: Build web
+        run: flutter build web --release --base-href "/${{ github.event.repository.name }}/"
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: build/web
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
