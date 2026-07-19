@@ -24,9 +24,11 @@ class MathEvaluatorDatasource {
     if (expr == null) return null;
     try {
       _contextModel.bindVariableName('x', Number(x));
-      final result = expr.evaluate(EvaluationType.REAL, _contextModel) as double;
-      if (!result.isFinite) return null;
-      return result;
+      final evaluator = RealEvaluator(_contextModel);
+      final result = evaluator.evaluate(expr);
+      final value = result.toDouble();
+      if (!value.isFinite) return null;
+      return value;
     } catch (_) {
       return null;
     }
