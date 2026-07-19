@@ -6,6 +6,14 @@ A modern **Desmos-inspired graphing calculator** built with Flutter. This projec
 
 ---
 
+## 👇 Download
+
+you can download from [release page](https://github.com/AbrarShakhi/graphaite/releases). 
+
+You can also build from source. See below
+
+---
+
 ## ✨ Features
 
 * 📈 Plot multiple mathematical functions simultaneously
